@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipe List{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Recipes</h1>
+    
+    <!-- Category Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <div class="btn-group" role="group" aria-label="Category filter">
+                <a href="{% url 'recipe_list' %}" class="btn btn-outline-primary {% if not category_id %}active{% endif %}">All</a>
+                {% for category in categories %}
+                    <a href="{% url 'recipe_by_category' category.id %}" class="btn btn-outline-primary {% if category_id == category.id %}active{% endif %}">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Section -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for recipe in recipes %}
+        <div class="col">
+            <div class="card" style="width: 18rem; height: 25rem;">
+                <img src="{{ recipe.image.url }}" class="card-img-top img-fluid" alt="{{ recipe.name }}" style="height: 10rem; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.name }}</h5>
+                    <p class="card-text text-truncate">{{ recipe.description|truncatewords:10 }}</p>
+                    <p class="card-text">{{ recipe.created_by }}</p>
+                    <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-primary">View Details</a>
+                    {% if user == recipe.created_by %}
+                        <a href="{% url 'recipe_edit' recipe.pk %}" class="btn btn-secondary">Edit</a>
+                        <form action="{% url 'recipe_delete' recipe.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

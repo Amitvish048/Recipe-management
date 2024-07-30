@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipe Detail{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>{{ recipe.name }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="img-fluid">
+        </div>
+        <div class="col-md-8">
+            <form>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <p id="description" class="form-control-static">{{ recipe.description }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="ingredients">Ingredients:</label>
+                    <p id="ingredients" class="form-control-static">{{ recipe.ingredients }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Instructions:</label>
+                    <p id="instructions" class="form-control-static">{{ recipe.instructions }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <p id="category" class="form-control-static">{{ recipe.category }}</p>
+                </div>
+                
+                <a href="{% url 'recipe_list' %}" class="btn btn-secondary">Back to list</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
